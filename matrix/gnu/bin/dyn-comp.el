@@ -1,0 +1,37 @@
+;; -*- byte compile dynamic-lisp guile languages lisp -*-
+;; -*-byte-compile-dynamic: t;-*-
+
+;; name project: guile-int
+;; name program: int
+;; func program: dynamic loading of Individual functions
+;; gnu hack: GNU Guile Dynamic loading (Dynamic Loading Reference Manual)
+;; compile: body code magic dynamic
+;; optionally: enable dynamic
+;; refers: features
+;; many: news jobs dyanmic
+;; will: provides
+;; dynamic: compile
+;; mode: buffer lisp
+;; feature: easy life money
+;; level: easy life money
+
+;; start file
+;; stream roku new ambient wave sounds
+
+;; 17.4 Dynamic Loading of Individual Functions
+
+;; When you compile a file, you can optionally enable the dynami;; c function loading feature (also known as lazy loading). With;;  dynamic function loading, loading the file doesn’t fully rea;; d the function definitions in the file. Instead, each functio;; n definition contains a place-holder which refers to the file;; . The first time each function is called, it reads the full d;; efinition from the file, to replace the place-holder.
+
+;; The advantage of dynamic function loading is that loading the;;  file should become faster. This is a good thing for a file w;; hich contains many separate user-callable functions, if using;; one of them does not imply you will probably also use the res;; t. A specialized mode which provides many keyboard commands o;; ften has that usage pattern: a user may invoke the mode, but ;; use only a few of the commands it provides.
+
+;; The dynamic loading feature has certain disadvantages:
+
+;;    If you delete or move the compiled file after loading it, ;; Emacs can no longer load the remaining function definitions n;; ot already loaded.
+;;    If you alter the compiled file (such as by compiling a new;; version), then trying to load any function not already loaded;; will usually yield nonsense results. 
+
+;; These problems will never happen in normal circumstances with;; installed Emacs files. But they are quite likely to happen wi;; th Lisp files that you are changing. The easiest way to preve;; nt these problems is to reload the new compiled file immediat;; ely after each recompilation.
+
+;; Experience shows that using dynamic function loading provides;;  benefits that are hardly measurable, so this feature is depr;; ecated since Emacs 27.1.
+
+;; The byte compiler uses the dynamic function loading feature i;; f the variable byte-compile-dynamic is non-nil at compilation;;  time. Do not set this variable globally, since dynamic loadi;; ng is desirable only for certain files. Instead, enable the f;; eature for specific source files with file-local variable bin;; dings. For example, you could do it by writing this text in t;; he source file’s first line: 
+

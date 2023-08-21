@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html><!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ --><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Integer Basics (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Integer Basics (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Integer Basics (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link rev="made" href="mailto:bug-gnu-emacs@gnu.org">
+<link rel="icon" type="image/png" href="https://www.gnu.org/graphics/gnu-head-mini.png">
+<meta name="ICBM" content="42.256233,-71.006581">
+<meta name="DC.title" content="gnu.org">
+<style type="text/css">
+@import url('/software/emacs/manual.css');
+</style>
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Integer-Basics">
+<div class="nav-panel">
+<p>
+Next: <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Float-Basics.html" accesskey="n" rel="next">Floating-Point Basics</a>, Up: <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Numbers.html" accesskey="u" rel="up">Numbers</a> &nbsp; [<a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Integer-Basics-1">3.1 Integer Basics</h3>
+
+<p>The Lisp reader reads an integer as a nonempty sequence
+of decimal digits with optional initial sign and optional
+final period.
+</p>
+<div class="example">
+<pre class="example-preformatted"> 1               ; <span class="r">The integer 1.</span>
+ 1.              ; <span class="r">The integer 1.</span>
++1               ; <span class="r">Also the integer 1.</span>
+-1               ; <span class="r">The integer −1.</span>
+ 0               ; <span class="r">The integer 0.</span>
+-0               ; <span class="r">The integer 0.</span>
+</pre></div>
+
+<a class="index-entry-id" id="index-integers-in-specific-radix"></a>
+<a class="index-entry-id" id="index-radix-for-reading-an-integer"></a>
+<a class="index-entry-id" id="index-base-for-reading-an-integer"></a>
+<a class="index-entry-id" id="index-hex-numbers"></a>
+<a class="index-entry-id" id="index-octal-numbers"></a>
+<a class="index-entry-id" id="index-reading-numbers-in-hex_002c-octal_002c-and-binary"></a>
+<p>The syntax for integers in bases other than 10 consists of ‘<samp class="samp">#</samp>’
+followed by a radix indication followed by one or more digits.  The
+radix indications are ‘<samp class="samp">b</samp>’ for binary, ‘<samp class="samp">o</samp>’ for octal,
+‘<samp class="samp">x</samp>’ for hex, and ‘<samp class="samp"><var class="var">radix</var>r</samp>’ for radix <var class="var">radix</var>.
+Thus, ‘<samp class="samp">#b<var class="var">integer</var></samp>’ reads
+<var class="var">integer</var> in binary, and ‘<samp class="samp">#<var class="var">radix</var>r<var class="var">integer</var></samp>’ reads
+<var class="var">integer</var> in radix <var class="var">radix</var>.  Allowed values of <var class="var">radix</var> run
+from 2 to 36, and allowed digits are the first <var class="var">radix</var> characters
+taken from ‘<samp class="samp">0</samp>’–‘<samp class="samp">9</samp>’, ‘<samp class="samp">A</samp>’–‘<samp class="samp">Z</samp>’.
+Letter case is ignored and there is no initial sign or final period.
+For example:
+</p>
+<div class="example">
+<pre class="example-preformatted">#b101100 ⇒ 44
+#o54 ⇒ 44
+#x2c ⇒ 44
+#24r1k ⇒ 44
+</pre></div>
+
+<p>To understand how various functions work on integers, especially the
+bitwise operators (see <a class="pxref" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Bitwise-Operations.html">Bitwise Operations on Integers</a>), it is often helpful to
+view the numbers in their binary form.
+</p>
+<p>In binary, the decimal integer 5 looks like this:
+</p>
+<div class="example">
+<pre class="example-preformatted">…000101
+</pre></div>
+
+<p>(The ellipsis ‘<samp class="samp">…</samp>’ stands for a conceptually infinite number
+of bits that match the leading bit; here, an infinite number of 0
+bits.  Later examples also use this ‘<samp class="samp">…</samp>’ notation.)
+</p>
+<p>The integer −1 looks like this:
+</p>
+<div class="example">
+<pre class="example-preformatted">…111111
+</pre></div>
+
+<a class="index-entry-id" id="index-two_0027s-complement"></a>
+<p>−1 is represented as all ones.  (This is called <em class="dfn">two’s
+complement</em> notation.)
+</p>
+<p>Subtracting 4 from −1 returns the negative integer −5.
+In binary, the decimal integer 4 is 100.  Consequently,
+−5 looks like this:
+</p>
+<div class="example">
+<pre class="example-preformatted">…111011
+</pre></div>
+
+<p>Many of the functions described in this chapter accept markers for
+arguments in place of numbers.  (See <a class="xref" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Markers.html">Markers</a>.)  Since the actual
+arguments to such functions may be either numbers or markers, we often
+give these arguments the name <var class="var">number-or-marker</var>.  When the argument
+value is a marker, its position value is used and its buffer is ignored.
+</p>
+<p>In Emacs Lisp, text characters are represented by integers.  Any
+integer between zero and the value of <code class="code">(max-char)</code>, inclusive, is
+considered to be valid as a character.  See <a class="xref" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Character-Codes.html">Character Codes</a>.
+</p>
+<p>Integers in Emacs Lisp are not limited to the machine word size.
+Under the hood, though, there are two kinds of integers: smaller ones,
+called <em class="dfn">fixnums</em>, and larger ones, called <em class="dfn">bignums</em>.  Although
+Emacs Lisp code ordinarily should not depend on whether an integer is
+a fixnum or a bignum, older Emacs versions support only fixnums, some
+functions in Emacs still accept only fixnums, and older Emacs Lisp
+code may have trouble when given bignums.  For example, while older
+Emacs Lisp code could safely compare integers for numeric equality
+with <code class="code">eq</code>, the presence of bignums means that equality predicates
+like <code class="code">eql</code> and <code class="code">=</code> should now be used to compare integers.
+</p>
+<p>The range of values for bignums is limited by the amount of main
+memory, by machine characteristics such as the size of the word used
+to represent a bignum’s exponent, and by the <code class="code">integer-width</code>
+variable.  These limits are typically much more generous than the
+limits for fixnums.  A bignum is never numerically equal to a fixnum;
+Emacs always represents an integer in fixnum range as a fixnum, not a
+bignum.
+</p>
+<p>The range of values for a fixnum depends on the machine.  The
+minimum range is −536,870,912 to 536,870,911 (30 bits; i.e.,
+−2**29
+to
+2**29 − 1),
+but many machines provide a wider range.
+</p>
+<a class="index-entry-id" id="index-largest-fixnum"></a>
+<a class="index-entry-id" id="index-maximum-fixnum"></a>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-most_002dpositive_002dfixnum"><span class="category-def">Variable: </span><span><strong class="def-name">most-positive-fixnum</strong><a class="copiable-link" href="#index-most_002dpositive_002dfixnum"> ¶</a></span></dt>
+<dd><p>The value of this variable is the greatest “small” integer that Emacs
+Lisp can handle.  Typical values are
+2**29 − 1
+on 32-bit and
+2**61 − 1
+on 64-bit platforms.
+</p></dd></dl>
+
+<a class="index-entry-id" id="index-smallest-fixnum"></a>
+<a class="index-entry-id" id="index-minimum-fixnum"></a>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-most_002dnegative_002dfixnum"><span class="category-def">Variable: </span><span><strong class="def-name">most-negative-fixnum</strong><a class="copiable-link" href="#index-most_002dnegative_002dfixnum"> ¶</a></span></dt>
+<dd><p>The value of this variable is the numerically least “small” integer
+that Emacs Lisp can handle.  It is negative.  Typical values are
+−2**29
+on 32-bit and
+−2**61
+on 64-bit platforms.
+</p></dd></dl>
+
+<a class="index-entry-id" id="index-bignum-range"></a>
+<a class="index-entry-id" id="index-integer-range"></a>
+<a class="index-entry-id" id="index-number-of-bignum-bits_002c-limit-on"></a>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-integer_002dwidth"><span class="category-def">Variable: </span><span><strong class="def-name">integer-width</strong><a class="copiable-link" href="#index-integer_002dwidth"> ¶</a></span></dt>
+<dd><p>The value of this variable is a nonnegative integer that controls
+whether Emacs signals a range error when a large integer would be
+calculated.  Integers with absolute values less than
+2**<var class="var">n</var>,
+where <var class="var">n</var> is this variable’s value, do not signal a range error.
+Attempts to create larger integers typically signal a range error,
+although there might be no signal if a larger integer can be created cheaply.
+Setting this variable to a large number can be costly if a computation
+creates huge integers.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Float-Basics.html">Floating-Point Basics</a>, Up: <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Numbers.html">Numbers</a> &nbsp; [<a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+
+
+</body></html>

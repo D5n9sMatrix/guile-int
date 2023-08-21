@@ -1,0 +1,83 @@
+;; -*- bytes dynamic-lisp guile languages lisp -*-
+
+;; name project: guile-int
+;; name program: int
+;; func program: integer type
+
+;; gnu hack: GNU Guile Integer Type (Integer Type Reference Manual)
+;; develop: values
+;; will: stream
+;; roku: stream films and tv
+;; cash: stream judycl
+;; item: packages all
+;; basic: tools
+;; running: street path
+
+;; start file
+;; stream roku films and tv
+
+
+;; Function: ffloor float ¶
+
+;; This function rounds float to the next lower integral value, ;; and returns that value as a floating-point number.
+
+"(ffloor 2.2)"
+
+;; Function: 1+ number-or-marker ¶
+
+;; This function returns number-or-marker plus 1. For example,
+
+"(setq foo 4)"
+"(1+ foo)"
+
+;; This function is not analogous to the C operator ++—it does n;; ot increment a variable. It just computes a sum. Thus, if we ;; continue,
+
+
+;; If you want to increment the variable, you must use setq, lik;; e this: 
+
+"(setq foo (1+ foo))"
+
+
+;; This returns number converted to floating point. If number is;; already floating point, float returns it unchanged.
+
+"(float 4.2)"
+
+
+;; packages items values scripts
+(defvar fuzz-factor 1.0e-6)
+(defun approx-equal (x y)
+  (or (= x y)
+      (< (/ (abs (- x y))
+            (max (abs x) (abs y)))
+         fuzz-factor)))
+
+"(max 1525)"
+"(min 2)"
+;; packages full seberon
+"(zerop 0)"
+;; infinity
+"‘1.0e+INF’ and ‘-1.0e+INF’"
+;; not-a-number
+"‘0.0e+NaN’ and ‘-0.0e+NaN’"
+;; This predicate returns t if its floating-point argument is a ;; NaN, nil otherwise.
+"(isnan 0)"
+
+;; This function returns a cons cell (s . e), where s and e are ;; respectively the significand and exponent of the floating-poi;; nt number x.
+"(frexp 4)"
+
+;; If x is finite, then s is a floating-point number between 0.5;;  (inclusive) and 1.0 (exclusive), e is an integer, and x = s ;; * 2**e. If x is zero or infinity, then s is the same as x. If;;  x is a NaN, then s is also a NaN. If x is zero, then e is 0.
+
+;; This function returns the binary exponent of x. More precisel;; y, if x is finite and nonzero, the value is the logarithm bas;; e 2 of |x|, rounded down to an integer. If x is zero or infin;; ite, the value is infinity; if x is a NaN, the value is a NaN;; .
+"(logb 80)"
+
+
+; 2.4.2 Floating-Point Type
+
+; Floating-point numbers are the computer equivalent of scientif;; ic notation; you can think of a floating-point number as a fr;; action together with a power of ten. The precise number of si;; gnificant figures and the range of possible exponents is mach;; ine-specific; Emacs uses the C data type double to store the ;; value, and internally this records a power of 2 rather than a;;  power of 10.
+
+;; The printed representation for floating-point numbers require;; s either a decimal point (with at least one digit following),;;  an exponent, or both. For example, ‘1500.0’, ‘+15e2’, ‘15.0e;; +2’, ‘+1500000e-3’, and ‘.15e4’ are five ways of writing a fl;; oating-point number whose value is 1500. They are all equival;; ent.
+
+
+(random 0)
+
+
